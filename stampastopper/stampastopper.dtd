@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT stampastopper (codastampa*)> 
+
+<!ELEMENT codastampa (stopper-vuoto | stopper-promo | stopper-frutta | card)*> 
+
+<!ELEMENT stopper-vuoto EMPTY>
+
+<!ELEMENT codice (#PCDATA)>
+<!ELEMENT descrizione (riga+)>
+<!ELEMENT riga (#PCDATA)>
+<!ELEMENT quantita EMPTY>
+<!ELEMENT prezzo (#PCDATA)>
+
+<!ELEMENT stopper-frutta (codice?, descrizione, quantita, prezzo, tasto?, calibro?, origine, categoria, elenco-additivi?)>
+<!ELEMENT calibro (#PCDATA)>
+<!ELEMENT tasto (#PCDATA)>
+<!ELEMENT origine (#PCDATA)>
+<!ELEMENT categoria (#PCDATA)>
+<!ELEMENT elenco-additivi (#PCDATA)>
+
+<!ELEMENT stopper-promo (codice?, descrizione, quantita*, (prezzo?|(prezzo, percentuale-sconto)), prezzo-offerta, prezzo-per-um-nascosto?, pezzi-max?, con-card?, periodo?)>
+<!ELEMENT prezzo-offerta (#PCDATA)>
+<!ELEMENT prezzo-per-um-nascosto EMPTY>
+<!ELEMENT pezzi-max (#PCDATA)>
+<!ELEMENT con-card EMPTY>
+<!ELEMENT facoltativo EMPTY>
+<!ELEMENT percentuale-sconto (#PCDATA)>
+<!ELEMENT periodo EMPTY>
+
+<!ELEMENT stopper-gastronomia (codice?, descrizione, quantita, prezzo, elenco-ingredienti?, note?)>
+<!ELEMENT elenco-ingredienti (#PCDATA)>
+<!ELEMENT note (#PCDATA)>
+
+<!ELEMENT card (nome, codice-ean)>
+<!ELEMENT nome (#PCDATA)>
+<!ELEMENT codice-ean (#PCDATA)>
+
+<!ATTLIST stampastopper
+	rev CDATA #IMPLIED
+	>
+
+<!ATTLIST codastampa
+      stile   (sesto_a4_bn|meta_a4_bn|sesto_a4_colori|meta_a4_colori|
+      carta_speciale_promo_taglio_prezzo|carta_speciale_promo_uno_piu_uno|carta_speciale_promo_sconto_percentuale) #REQUIRED
+>
+
+<!ATTLIST stopper-promo
+      copie		CDATA #IMPLIED
+      tipo		(scontopercentuale|taglioprezzo|unopiuuno|sottocosto) #REQUIRED
+>
+
+<!ATTLIST stopper-frutta
+      copie   CDATA #IMPLIED
+>
+
+<!ATTLIST stopper-vuoto
+      copie   CDATA #IMPLIED
+>
+
+<!ATTLIST stopper-gastronomia
+      copie   CDATA #IMPLIED
+>
+
+<!ATTLIST quantita
+      unitadimisura   	(pz|gr|kg|hg|mg|lt|ml|cl) #REQUIRED
+      valore	   		CDATA #IMPLIED
+      moltiplicatore 	CDATA #IMPLIED
+>
+
+<!ATTLIST periodo
+      inizio	CDATA #REQUIRED
+      fine   	CDATA #REQUIRED
+>
