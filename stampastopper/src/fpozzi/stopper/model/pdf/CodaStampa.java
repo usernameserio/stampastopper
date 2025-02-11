@@ -1,9 +1,11 @@
 package fpozzi.stopper.model.pdf;
 
+import java.awt.print.PrinterAbortException;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -15,6 +17,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.print.PrintService;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -114,13 +121,13 @@ public class CodaStampa implements PdfStopperRequestObserver
 	}
 
 	/*
-	 * public void replaceRequest(ObservableObservablePdfStopperRequest
-	 * oldRequest, ObservableObservablePdfStopperRequest newRequest) {
+	 * public void replaceRequest(ObservableObservablePdfStopperRequest oldRequest,
+	 * ObservableObservablePdfStopperRequest newRequest) {
 	 * List<ObservableObservablePdfStopperRequest> targetRequests =
 	 * requests.get(newRequest.getStyle()); if
 	 * (oldRequest.getStyle().equals(newRequest.getStyle())) {
-	 * targetRequests.set(targetRequests.indexOf(oldRequest), newRequest); }
-	 * else { removeRequest(oldRequest); addRequest(newRequest); }
+	 * targetRequests.set(targetRequests.indexOf(oldRequest), newRequest); } else {
+	 * removeRequest(oldRequest); addRequest(newRequest); }
 	 * 
 	 * }
 	 */
@@ -152,7 +159,8 @@ public class CodaStampa implements PdfStopperRequestObserver
 			observer.requestChanged(this, request);
 	}
 
-	private PdfPTable makeTable(PdfStopperStyle style, PdfContentByte pdfContentByte) throws UnsupportedStyleException, DocumentException
+	private PdfPTable makeTable(PdfStopperStyle style, PdfContentByte pdfContentByte)
+			throws UnsupportedStyleException, DocumentException
 	{
 		PdfPTable table = new PdfPTable(style.getFormat().getCols());
 		table.setTotalWidth(style.getFormat().getPageRectangle().getWidth());
@@ -160,7 +168,8 @@ public class CodaStampa implements PdfStopperRequestObserver
 
 		PdfPCell stopperCell;
 
-		boolean leftToRight = style.getFormat().getPageRectangle().getWidth() <= style.getFormat().getPageRectangle().getHeight();
+		boolean leftToRight = style.getFormat().getPageRectangle().getWidth() <= style.getFormat().getPageRectangle()
+				.getHeight();
 
 		int rows = style.getFormat().getRows(), cols = style.getFormat().getCols();
 		int initialCol = leftToRight ? 0 : cols - 1;
@@ -201,8 +210,7 @@ public class CodaStampa implements PdfStopperRequestObserver
 					{
 						c = initialCol;
 					}
-				}
-				else
+				} else
 				{
 					cellsOnPage[c++][r] = stopperCell;
 					if (c == cols)
@@ -232,7 +240,8 @@ public class CodaStampa implements PdfStopperRequestObserver
 		return table;
 	}
 
-	public File makePdfFile(PdfStopperStyle style, String stamp) throws DocumentException, UnsupportedStyleException, FileInUseException, IOException
+	public File makePdfFile(PdfStopperStyle style, String stamp)
+			throws DocumentException, UnsupportedStyleException, FileInUseException, IOException
 	{
 		File outputFile = new File(stamp + "_" + style.toString().toLowerCase() + ".pdf");
 
@@ -240,8 +249,7 @@ public class CodaStampa implements PdfStopperRequestObserver
 		try
 		{
 			os = new FileOutputStream(outputFile);
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			throw new FileInUseException(outputFile);
 		}
@@ -249,13 +257,40 @@ public class CodaStampa implements PdfStopperRequestObserver
 		try
 		{
 			os.write(makePDF(style).toByteArray());
-		}
-		finally
+		} finally
 		{
 			os.close();
 		}
 
 		return outputFile;
+	}
+
+	public void printPdfFile(PdfStopperStyle style, PrintService printService)
+			throws DocumentException, UnsupportedStyleException, IOException, PrinterException
+	{
+		PDDocument pdDoc = null;
+		PrinterJob job = PrinterJob.getPrinterJob();
+
+		try
+		{
+
+			job.setPrintService(printService);
+			job.setJobName(style.toString().toLowerCase());
+			pdDoc = PDDocument.load(makePDF(style).toByteArray());
+
+			job.setPageable(new PDFPageable(pdDoc));
+			job.print();
+
+		} catch (PrinterAbortException e)
+		{
+			// avoid abort exception
+		} catch (PrinterException e)
+		{
+			throw new PrinterException("Error while printing");
+		} finally
+		{
+			pdDoc.close();
+		}
 	}
 
 	private String makeTimestamp()

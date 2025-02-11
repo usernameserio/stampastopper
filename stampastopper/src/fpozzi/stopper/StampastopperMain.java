@@ -5,10 +5,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.print.PrintService;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
@@ -18,14 +20,13 @@ import fpozzi.stopper.StampaStopperProperties.StampaStopperProperty;
 import fpozzi.stopper.controller.MainController;
 import fpozzi.stopper.dao.*;
 import fpozzi.stopper.dao.mysql.*;
-import fpozzi.stopper.model.pdf.style.fonts.FontFactory;
 import fpozzi.stopper.view.swing.MainWindow;
 import fpozzi.utils.logging.TextAreaLoggerHandler;
 
 public class StampastopperMain
 {
-	public static final String version = "0.66";
-	public static final String data = "06/02/2024";
+	public static final String version = "0.67beta";
+	public static final String data = "xx/02/2024";
 	public static final String appTitle = "stampastopper v" + version;
 
 	static
@@ -38,6 +39,8 @@ public class StampastopperMain
 		}
 	}
 
+	public static PrintService printService = null;
+	
 	public static void main(String[] args)
 	{
 
@@ -47,9 +50,9 @@ public class StampastopperMain
 			{
 				try
 				{
-					StampaStopperProperties.Init();
+					StampaStopperProperties.Init();				
 					final StampaStopperProperties properties = StampaStopperProperties.getInstance();
-
+									
 					MysqlDataSource dataSource = new MysqlDataSource();
 					dataSource.setServerName(properties.getProperty(StampaStopperProperty.MYSQL_SERVER));
 					dataSource.setDatabaseName(properties.getProperty(StampaStopperProperty.MYSQL_DB));
@@ -112,17 +115,7 @@ public class StampastopperMain
 					gui.setIconImages(icons);
 					StampaStopperLogger.get().addHandler(new TextAreaLoggerHandler(gui.getLogTextArea()));
 					StampaStopperLogger.get().info("[" + appTitle + "]");
-/*
-					Thread thread = new Thread()
-					{
-						public void run()
-						{
-							FontFactory.Init();
-						}
-					};
 
-					thread.start();
-*/
 					final MainController ctrl = new MainController(gui);
 
 					gui.pack();

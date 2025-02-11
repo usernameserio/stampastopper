@@ -1,6 +1,7 @@
 package fpozzi.stopper.controller;
 
 import java.awt.Desktop;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,10 +10,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.print.PrintService;
+
 import com.itextpdf.text.DocumentException;
 
 import fpozzi.gdoshop.model.offerta.PeriodoOfferta;
 import fpozzi.stopper.StampaStopperLogger;
+import fpozzi.stopper.StampaStopperProperties;
+import fpozzi.stopper.StampaStopperProperties.StampaStopperProperty;
 import fpozzi.stopper.model.PromoStopper;
 import fpozzi.stopper.model.pdf.CodaStampa;
 import fpozzi.stopper.model.pdf.CodaStampaObserver;
@@ -27,8 +32,9 @@ import fpozzi.utils.exception.FileInUseException;
 import fpozzi.utils.swing.ConfirmDialogOptions;
 
 public class CodaStampaController implements CodaStampaViewObserver, CodaStampaObserver
-{
-
+{	
+	private final PrintService printService;
+	
 	private final CodaStampaView view;
 
 	private CodaStampa codaStampa;
@@ -57,6 +63,20 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		}
 		else
 			throw new FileNotFoundException();
+		
+		String stampante = StampaStopperProperties.getInstance().getProperty(StampaStopperProperty.STAMPANTE).trim();
+		
+		PrintService printService = null;
+		if (!stampante.equals(""))						
+		{
+			 for(PrintService ps: PrinterJob.lookupPrintServices()) 
+		            if (ps.getName().indexOf(stampante)>=0) 
+		            	printService = ps;
+			 if (printService == null)
+				 StampaStopperLogger.get().severe("Stampante '" + stampante + "' non trovata!");
+		}
+		this.printService = printService;
+	
 	}
 
 	public CodaStampaView getView()
@@ -150,9 +170,9 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		}
 	}
 
-	public void generatePDFs(PdfStopperStyle style)
+	public void generatePDF(PdfStopperStyle style)
 	{
-		generatePDFs(style, makePdfFileStamp());
+		generatePDF(style, makePdfFileStamp());
 	}
 
 	private String makePdfFileStamp()
@@ -170,7 +190,7 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		return "new";
 	}
 
-	private void generatePDFs(PdfStopperStyle style, String stamp)
+	private void generatePDF(PdfStopperStyle style, String stamp)
 	{
 
 		try
@@ -182,11 +202,28 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		catch (FileInUseException e)
 		{
 			if (view.askToCloseOpenFile(e.getFileInUse()))
-				generatePDFs(style, stamp);
+				generatePDF(style, stamp);
 		}
 		catch (DocumentException | UnsupportedStyleException | IOException e)
 		{
 			StampaStopperLogger.get().severe("Impossibile generare un pdf per lo stile \'" + style.getDescrizione() + "\': " + e.getMessage());
+		}
+
+	}
+	
+	public void print(PdfStopperStyle style)
+	{
+		try
+		{
+			if (printService==null)
+				throw new Exception("stampante non trovata");
+				
+			codaStampa.printPdfFile(style, printService);
+			StampaStopperLogger.get().info("La coda '" + style.getDescrizione() + "' è stata mandata in stampa.");
+		}
+		catch (Exception e)
+		{
+			StampaStopperLogger.get().severe("Impossibile stampare per lo stile \'" + style.getDescrizione() + "\': " + e.getMessage());
 		}
 
 	}
@@ -199,7 +236,7 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		{
 			if (codaStampa.getRequests(style).size() > 0)
 			{
-				generatePDFs(style, stamp);
+				generatePDF(style, stamp);
 			}
 		}
 	}

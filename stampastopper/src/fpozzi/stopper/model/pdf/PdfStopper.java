@@ -105,7 +105,7 @@ public abstract class PdfStopper<S extends Stopper> implements Cloneable
 		return preview.image;
 	}
 
-	private class StopperPreview
+	public class StopperPreview
 	{
 		PdfStopperStyle style;
 		int dpi;

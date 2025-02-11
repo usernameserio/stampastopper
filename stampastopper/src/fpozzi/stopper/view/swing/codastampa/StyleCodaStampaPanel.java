@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellEditor;
 
+import fpozzi.stopper.StampaStopperProperties;
+import fpozzi.stopper.StampaStopperProperties.StampaStopperProperty;
 import fpozzi.stopper.model.pdf.PdfStopperStyle;
 import fpozzi.stopper.view.swing.Icons;
 import fpozzi.utils.format.FormatUtils;
@@ -34,7 +36,7 @@ class StyleCodaStampaPanel extends JPanel
 
 	private final StyleCodaStampaTable table;
 
-	private final JButton generaButton;
+	private final JButton generaButton, stampaButton;
 	private final JLabel stopperTotaliLabel;
 	private final JLabel pagineTotaliLabel;
 
@@ -175,13 +177,14 @@ class StyleCodaStampaPanel extends JPanel
 
 		southPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-		generaButton = new JButton("Genera stopper  ");
+		generaButton = new JButton("Genera PDF  ");
 
 		generaButton.setOpaque(false);
 		generaButton.setAlignmentX(CENTER_ALIGNMENT);
 		generaButton.setIcon(Icons.WIZARD_SMALL.image);
 		generaButton.setVerticalTextPosition(SwingConstants.CENTER);
 		generaButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		generaButton.setVisible(!StampaStopperProperties.getInstance().getProperty(StampaStopperProperty.STAMPA_DIRETTA).equals("true"));
 		generaButton.addActionListener(new ActionListener()
 		{
 
@@ -194,11 +197,36 @@ class StyleCodaStampaPanel extends JPanel
 					if (editor != null)
 						csPanel.getValue().table.getCellEditor().stopCellEditing();
 				}
-				parentPanel.getObserver().generatePDFs(StyleCodaStampaPanel.this.style);
+				parentPanel.getObserver().generatePDF(StyleCodaStampaPanel.this.style);
 			}
 
 		});
 		southPanel.add(generaButton);
+		
+		stampaButton = new JButton("Stampa  ");
+
+		stampaButton.setOpaque(false);
+		stampaButton.setAlignmentX(CENTER_ALIGNMENT);
+		stampaButton.setIcon(Icons.WIZARD_SMALL.image);
+		stampaButton.setVerticalTextPosition(SwingConstants.CENTER);
+		stampaButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		stampaButton.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent evt)
+			{
+				for (Entry<PdfStopperStyle, StyleCodaStampaPanel> csPanel : parentPanel.getStyleCodaStampaPanels().entrySet())
+				{
+					TableCellEditor editor = csPanel.getValue().table.getCellEditor();
+					if (editor != null)
+						csPanel.getValue().table.getCellEditor().stopCellEditing();
+				}
+				parentPanel.getObserver().print(StyleCodaStampaPanel.this.style);
+			}
+
+		});
+		southPanel.add(stampaButton);
 
 		tableContainer.add(southPanel, BorderLayout.SOUTH);
 

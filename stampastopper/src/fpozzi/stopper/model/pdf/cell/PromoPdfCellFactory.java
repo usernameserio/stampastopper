@@ -117,7 +117,7 @@ public abstract class PromoPdfCellFactory<S extends PromoStopper> extends Artico
 				westCell.setFixedHeight(Utilities.millimetersToPoints(38));
 				westCell.setPaddingRight(Utilities.millimetersToPoints(5));
 
-				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(heavyFontStyle, 17),
+				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(boldFontStyle, 17),
 						FontFactory.getFont(normalFontStyle, 16));
 				descriptionParagraph.setAlignment(Element.ALIGN_RIGHT);
 				descriptionParagraph.setLeading(0, 1.1f);
@@ -250,7 +250,7 @@ public abstract class PromoPdfCellFactory<S extends PromoStopper> extends Artico
 				westCell.setFixedHeight(Utilities.millimetersToPoints(42));
 				westCell.setPaddingRight(Utilities.millimetersToPoints(5));
 
-				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(heavyFontStyle, 15),
+				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(boldFontStyle, 15),
 						FontFactory.getFont(normalFontStyle, 14));
 				descriptionParagraph.setAlignment(Element.ALIGN_RIGHT);
 				descriptionParagraph.setLeading(0, 1.2f);
@@ -373,7 +373,7 @@ public abstract class PromoPdfCellFactory<S extends PromoStopper> extends Artico
 				westCell.setFixedHeight(Utilities.millimetersToPoints(123));
 				westCell.setPaddingRight(Utilities.millimetersToPoints(8));
 
-				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(heavyFontStyle, 38),
+				descriptionParagraph = makeDescrizioneParagraph(stopper, FontFactory.getFont(boldFontStyle, 38),
 						FontFactory.getFont(normalFontStyle, 38));
 				descriptionParagraph.setAlignment(Element.ALIGN_RIGHT);
 				descriptionParagraph.setLeading(0, 1.2f);

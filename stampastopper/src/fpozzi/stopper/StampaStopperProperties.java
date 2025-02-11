@@ -33,7 +33,8 @@ public class StampaStopperProperties extends FilePropertiesHandler<StampaStopper
 		WINDOW, SCHEDE_APERTE, SCHEDA_ATTIVA, GDOSHOP_DIR, CARD_PREFIX, 
 		DEFAULT_PROMO_STYLE, DEFAULT_GASTRO_STYLE, DEFAULT_FRUTTA_STYLE,
 		MYSQL_SERVER, MYSQL_PORT, MYSQL_DB, MYSQL_USER, MYSQL_PWD, FONT_PROMO,
-		ENABLE_GDOSHOP, ENABLE_PROMO, ENABLE_GASTRO, ENABLE_CARDS, ENABLE_FRUTTA
+		ENABLE_GDOSHOP, ENABLE_PROMO, ENABLE_GASTRO, ENABLE_CARDS, ENABLE_FRUTTA,
+		STAMPA_DIRETTA, STAMPANTE
 		
 	}
 
@@ -45,6 +46,9 @@ public class StampaStopperProperties extends FilePropertiesHandler<StampaStopper
 		defaultProperties.setProperty(StampaStopperProperty.SCHEDA_ATTIVA, "");
 		defaultProperties.setProperty(StampaStopperProperty.GDOSHOP_DIR, "C:\\GDOshop");
 		defaultProperties.setProperty(StampaStopperProperty.CARD_PREFIX, "");
+		
+		defaultProperties.setProperty(StampaStopperProperty.STAMPA_DIRETTA, "true");
+		defaultProperties.setProperty(StampaStopperProperty.STAMPANTE, "");
 		
 		defaultProperties.setProperty(StampaStopperProperty.FONT_PROMO, "futura");
 		
@@ -62,6 +66,8 @@ public class StampaStopperProperties extends FilePropertiesHandler<StampaStopper
 		defaultProperties.setProperty(StampaStopperProperty.MYSQL_PORT, "");
 		defaultProperties.setProperty(StampaStopperProperty.MYSQL_DB, "");
 		defaultProperties.setProperty(StampaStopperProperty.MYSQL_USER, "");
+		defaultProperties.setProperty(StampaStopperProperty.MYSQL_PWD, "");
+		
 		defaultProperties.setProperty(StampaStopperProperty.MYSQL_PWD, "");
 		
 		//defaultProperties.setProperty(StampaStopperProperty., "");

@@ -1,0 +1,5 @@
+- stampa diretta senza aprire pdf
+- centratura cartellino/i per permettere di sfruttare fogli frammentati
+- ortofrutta - possibilità di importare articoli da anagrafica (come già per le offerte)
+- ortofrutta - possibilità di importare articoli da coda di stampa di gdoshop
+- ortofrutta - formato offerta ad hoc 
