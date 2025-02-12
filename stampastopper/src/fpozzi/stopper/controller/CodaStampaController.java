@@ -170,7 +170,7 @@ public class CodaStampaController implements CodaStampaViewObserver, CodaStampaO
 		}
 	}
 
-	public void generatePDF(PdfStopperStyle style)
+	public void generaPDF(PdfStopperStyle style)
 	{
 		generatePDF(style, makePdfFileStamp());
 	}

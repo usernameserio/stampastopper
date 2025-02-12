@@ -90,7 +90,7 @@ class CodaStampaTableModel extends AbstractTableModel
 		}
 		if (columnIndex == ColumnHeader.COPIE.ordinal())
 		{
-			return new Integer(row.getCopies());
+			return row.getCopies();
 		}
 
 		return null;

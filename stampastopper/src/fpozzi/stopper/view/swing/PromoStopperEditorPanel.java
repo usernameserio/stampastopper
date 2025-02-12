@@ -68,6 +68,7 @@ import fpozzi.utils.format.FormatUtils;
 import fpozzi.utils.swing.JFormattedNumberField;
 import fpozzi.utils.swing.SelectAllFocusAdapter;
 import fpozzi.utils.swing.SimpleDocumentListener;
+import fpozzi.utils.swing.UndoableTextField;
 import fpozzi.utils.swing.document.DecimalsOnlyDocument;
 import fpozzi.utils.swing.document.FilteredDocument;
 import fpozzi.utils.swing.document.IntegersOnlyDocument;
@@ -213,14 +214,14 @@ public class PromoStopperEditorPanel extends StopperEditorPanel<PdfPromoStopper>
 		builder.append(descrNotePanel, 5);
 		builder.nextLine();
 
-		rigaDescField = new JTextField[5];
+		rigaDescField = new UndoableTextField[5];
 		for (int i = 1; i <= rigaDescField.length; i++)
 		{
 			label = (new JLabel("riga " + i + " "));
 			label.setFont(Style.Fonts.italicFont);
 			label.setForeground(Color.GRAY);
 			builder.append(label);
-			rigaDescField[i - 1] = new JTextField(30);
+			rigaDescField[i - 1] = new UndoableTextField(30);
 			FilteredDocument rigaDescDocument = new LengthLimitDocument(30);
 			rigaDescField[i - 1].setDocument(rigaDescDocument);
 			// rigaDescField[i - 1].setHorizontalAlignment(JTextField.RIGHT);

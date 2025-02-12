@@ -82,7 +82,7 @@ public class StringUtils
 	private static Pattern sempreMinuscoloPattern = Pattern.compile(
 			"(^|\\s+)("
 			+ "E|O|"
-			+ "Di|Del|Degli|Della|Delle|"
+			+ "Di|Del|Degli|Della|Delle|D'"
 			+ "A|Ai|Al|Alla|Alle|Allo|Agli|"
 			+ "Da|Dal|"
 			+ "In|Nel|"

@@ -258,7 +258,7 @@ public class CodaStampaPanel extends JPanel implements CodaStampaView, Clipboard
 
 		cmdPanel.add(generateAllButton);
 
-		this.add(cmdPanel, BorderLayout.SOUTH);
+		//this.add(cmdPanel, BorderLayout.SOUTH);
 
 		this.setCodeVisibili(0);
 		this.setCodeConStopper(0);

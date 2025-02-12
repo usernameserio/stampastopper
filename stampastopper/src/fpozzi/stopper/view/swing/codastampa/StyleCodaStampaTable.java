@@ -164,7 +164,7 @@ public class StyleCodaStampaTable extends JTable
 				String boldWord = matcher.group(2);
 				if (boldWord==null)
 					boldWord = "";
-				htmlText += text.substring(start, matcher.start()) + "<b>" + boldWord.toUpperCase() + "</b>";
+				htmlText += text.substring(start, matcher.start()) + "<b>" + boldWord + "</b>";
 				start = matcher.end();
 			}
 			htmlText += "</html>";

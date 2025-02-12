@@ -55,7 +55,7 @@ public interface CodaStampaView extends CodaStampaObserver, PdfStopperRequestObs
 	public interface CodaStampaViewObserver
 	{
 
-		public void generatePDF(PdfStopperStyle style);
+		public void generaPDF(PdfStopperStyle style);
 		
 		public void print(PdfStopperStyle style);
 

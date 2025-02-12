@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ class StyleCodaStampaPanel extends JPanel
 
 	private final StyleCodaStampaTable table;
 
-	private final JButton generaButton, stampaButton;
+	private final JButton anteprimaButton, stampaButton;
 	private final JLabel stopperTotaliLabel;
 	private final JLabel pagineTotaliLabel;
 
@@ -177,15 +178,15 @@ class StyleCodaStampaPanel extends JPanel
 
 		southPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-		generaButton = new JButton("Genera PDF  ");
+		anteprimaButton = new JButton("Anteprima  ");
 
-		generaButton.setOpaque(false);
-		generaButton.setAlignmentX(CENTER_ALIGNMENT);
-		generaButton.setIcon(Icons.WIZARD_SMALL.image);
-		generaButton.setVerticalTextPosition(SwingConstants.CENTER);
-		generaButton.setHorizontalTextPosition(SwingConstants.LEFT);
-		generaButton.setVisible(!StampaStopperProperties.getInstance().getProperty(StampaStopperProperty.STAMPA_DIRETTA).equals("true"));
-		generaButton.addActionListener(new ActionListener()
+		anteprimaButton.setOpaque(false);
+		anteprimaButton.setMargin(new Insets(5,15,5,10));
+		anteprimaButton.setAlignmentX(CENTER_ALIGNMENT);
+		anteprimaButton.setIcon(Icons.PAGE_MAGNIFY.image);
+		anteprimaButton.setVerticalTextPosition(SwingConstants.CENTER);
+		anteprimaButton.setHorizontalTextPosition(SwingConstants.LEFT);		
+		anteprimaButton.addActionListener(new ActionListener()
 		{
 
 			@Override
@@ -197,17 +198,18 @@ class StyleCodaStampaPanel extends JPanel
 					if (editor != null)
 						csPanel.getValue().table.getCellEditor().stopCellEditing();
 				}
-				parentPanel.getObserver().generatePDF(StyleCodaStampaPanel.this.style);
+				parentPanel.getObserver().generaPDF(StyleCodaStampaPanel.this.style);
 			}
 
 		});
-		southPanel.add(generaButton);
+		southPanel.add(anteprimaButton);
 		
 		stampaButton = new JButton("Stampa  ");
 
 		stampaButton.setOpaque(false);
+		stampaButton.setMargin(new Insets(5,15,5,10));
 		stampaButton.setAlignmentX(CENTER_ALIGNMENT);
-		stampaButton.setIcon(Icons.WIZARD_SMALL.image);
+		stampaButton.setIcon(Icons.PRINTER_SMALL.image);
 		stampaButton.setVerticalTextPosition(SwingConstants.CENTER);
 		stampaButton.setHorizontalTextPosition(SwingConstants.LEFT);
 		stampaButton.addActionListener(new ActionListener()
@@ -278,7 +280,7 @@ class StyleCodaStampaPanel extends JPanel
 		stopperTotaliLabel.setText(newCount + "");
 		pagineTotaliLabel.setText(newCount / style.getFormat().getStoppersPerPage() + (newCount % style.getFormat().getStoppersPerPage() > 0 ? 1 : 0)
 				+ "");
-		generaButton.setEnabled(newCount > 0);
+		anteprimaButton.setEnabled(newCount > 0);
 	}
 
 }
